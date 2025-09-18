@@ -2,27 +2,35 @@
   <div id="app">
     <!-- Login Screen -->
     <div class="login-container" v-if="currentScreen === 'login'">
-      <div class="logo">License Manager</div>
-      <h2>Войдите в аккаунт</h2>
-      
-      <form class="login-form" @submit.prevent="login">
-        <div class="form-group">
-          <label for="login">Логин:</label>
-          <input type="text" id="login" v-model="loginForm.username" required>
+      <div class="main-container">
+        <div class="content">
+          <h1 class="main-title">License Manager</h1>
+          <h2 class="subtitle">Добро пожаловать, Барабулька</h2>
+          
+          <form class="login-form" @submit.prevent="login">
+            <div class="form-group">
+              <label for="login">Логин:</label>
+              <input type="text" id="login" v-model="loginForm.username" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="password">Пароль:</label>
+              <input type="password" id="password" v-model="loginForm.password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Вход</button>
+            
+            <div class="login-links">
+              <a href="#">Регистрация</a>
+              <a href="#">Забыли пароль?</a>
+            </div>
+          </form>
+          
+          <main class="main-content-area">
+            <!-- Будущий контент -->
+          </main>
         </div>
-        
-        <div class="form-group">
-          <label for="password">Пароль:</label>
-          <input type="password" id="password" v-model="loginForm.password" required>
-        </div>
-        
-        <button type="submit" class="btn btn-primary">Вход</button>
-        
-        <div class="login-links">
-          <a href="#">Регистрация</a>
-          <a href="#">Забыли пароль?</a>
-        </div>
-      </form>
+      </div>
     </div>
     
     <!-- Main Dashboard -->
@@ -278,7 +286,6 @@ export default {
   },
   methods: {
     login() {
-      // Простая проверка для демонстрации
       if (this.loginForm.username && this.loginForm.password) {
         this.currentScreen = 'dashboard';
       }
@@ -297,75 +304,92 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body, #app {
+  margin: 0;
+  height: 100%;
+  font-family: Arial, 'Inter', sans-serif;
 }
 
 body {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(180deg, #041628 0%, #032d4a 100%);
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
 }
 
 #app {
   width: 100vw;
   height: 100vh;
-  background: white;
   overflow: hidden;
 }
 
-.dashboard {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-}
-
-.sidebar {
-  width: 280px;
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.main-content {
-  flex: 1;
-  padding: 40px;
-  height: 100vh;
-  width: calc(100vw - 280px);
-}
-
-/* Login Styles */
+/* Login Screen Styles */
 .login-container {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 60px 40px;
-  background: white;
-  width: 500px;
-  margin: 0 auto;
+  height: 100vh;
+  width: 100vw;
 }
 
-.logo {
-  font-size: 32px;
-  font-weight: 700;
-  color: #4361ee;
-  margin-bottom: 40px;
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
 }
 
+.content {
+  max-width: 960px;
+  padding: 20px;
+}
+
+/* Main Title */
+.main-title {
+  font-size: 56px;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
+  margin: 0;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  font-family: Arial, 'Inter', sans-serif;
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #66E0FF;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
+  margin-top: 16px;
+  line-height: 1.3;
+  font-family: Arial, 'Inter', sans-serif;
+}
+
+/* Login Form */
 .login-form {
-  width: 100%;
+  width: 400px;
+  margin: 40px auto 0;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .form-group {
   margin-bottom: 25px;
   width: 100%;
+  text-align: left;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 10px;
   font-weight: 600;
-  color: #555;
+  color: #2d3748;
   font-size: 16px;
 }
 
@@ -376,6 +400,7 @@ body {
   border-radius: 10px;
   font-size: 16px;
   transition: border 0.3s;
+  background: white;
 }
 
 .form-group input:focus {
@@ -424,18 +449,28 @@ body {
   text-decoration: underline;
 }
 
+/* Main Content Area */
+.main-content-area {
+  width: 100%;
+  max-width: 960px;
+  margin-top: 40px;
+  min-height: 200px;
+}
+
 /* Dashboard Styles */
 .dashboard {
   display: flex;
-  min-height: 85vh;
+  width: 100vw;
+  height: 100vh;
 }
 
 .sidebar {
-  width: 300px;
+  width: 280px;
   background: #2d3748;
   color: white;
   padding: 30px 0;
   flex-shrink: 0;
+  height: 100vh;
 }
 
 .user-profile {
@@ -445,22 +480,22 @@ body {
 }
 
 .user-avatar {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: #4361ee;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36px;
-  margin: 0 auto 20px;
+  font-size: 32px;
+  margin: 0 auto 15px;
   color: white;
   font-weight: 600;
 }
 
 .user-name {
   font-weight: 600;
-  font-size: 20px;
+  font-size: 18px;
   color: white;
 }
 
@@ -470,7 +505,7 @@ body {
 }
 
 .nav-item {
-  padding: 18px 30px;
+  padding: 16px 25px;
   cursor: pointer;
   transition: background 0.3s;
   display: flex;
@@ -501,9 +536,11 @@ body {
   padding: 40px;
   background: #f7fafc;
   overflow-y: auto;
+  height: 100vh;
+  width: calc(100vw - 280px);
 }
 
-/* New Status View Styles */
+/* Status View Styles */
 .header-section {
   margin-bottom: 40px;
 }
@@ -653,6 +690,87 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
 }
-/* Убраны все медиа-запросы для мобильных устройств */
-/* Все стили теперь только для десктопной версии */
+
+/* Table Styles */
+.licenses-table {
+  background: white;
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  margin-top: 20px;
+}
+
+table {
+  width: auto;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 18px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 15px;
+}
+
+th {
+  background: #f7fafc;
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 120px;
+  text-align: center;
+}
+
+.status-ok {
+  background: #c6f6d5;
+  color: #276749;
+}
+
+.status-warning {
+  background: #fefcbf;
+  color: #744210;
+}
+
+.status-error {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+.room-header {
+  background: #edf2f7;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Settings Styles */
+.settings-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.settings-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #2d3748;
+}
 </style>
