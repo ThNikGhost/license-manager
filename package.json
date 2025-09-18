@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ThNikGhost/license-manager/issues"
   },
-  "homepage": "https://github.com/ThNikGhost/license-manager#readme"
+  "homepage": "https://github.com/ThNikGhost/license-manager#readme",
+  "devDependencies": {
+    "cache-loader": "^4.1.0"
+  }
 }
