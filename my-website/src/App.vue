@@ -25,10 +25,6 @@
               <a href="#">Забыли пароль?</a>
             </div>
           </form>
-          
-          <main class="main-content-area">
-            <!-- Будущий контент -->
-          </main>
         </div>
       </div>
     </div>
@@ -52,9 +48,6 @@
           <li class="nav-item" :class="{ active: currentView === 'settings' }" @click="currentView = 'settings'">
             <i class="fas fa-cog"></i> Настройки
           </li>
-          <li class="nav-item">
-            <i class="fas fa-question-circle"></i> Помощь
-          </li>
           <li class="nav-item" @click="logout">
             <i class="fas fa-sign-out-alt"></i> Выход
           </li>
@@ -68,18 +61,6 @@
           <div class="header-section">
             <h1>ВБ</h1>
             <h2>Вика Барабулька</h2>
-          </div>
-
-          <div class="info-grid">
-            <div class="info-card">
-              <h3>Соответствия</h3>
-              <ul class="info-list">
-                <li>Альпийский</li>
-                <li>Метрофон</li>
-                <li>Полиция</li>
-                <li>Япония</li>
-              </ul>
-            </div>
           </div>
 
           <div class="welcome-section">
@@ -105,166 +86,18 @@
               <div class="stat-value">72</div>
             </div>
           </div>
-
-          <div class="details-section">
-            <h3>Чернышко</h3>
-            <button class="details-btn" @click="currentView = 'licenses'">
-              Подробнее о лицензиях
-            </button>
-          </div>
         </div>
         
         <!-- Licenses View -->
         <div v-if="currentView === 'licenses'">
           <h2 class="page-title">Управление лицензиями</h2>
-          
-          <div class="licenses-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>Аудитория</th>
-                  <th>Номер ПК</th>
-                  <th>Лицензия</th>
-                  <th>Стоимость</th>
-                  <th>Активирован</th>
-                  <th>Истекает</th>
-                  <th>Статус</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="room-header">
-                  <td>309</td>
-                  <td colspan="6">В порядке</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>1</td>
-                  <td>Windows 7</td>
-                  <td>45$</td>
-                  <td>18.03.2025</td>
-                  <td>16.03.2030</td>
-                  <td><span class="status-badge status-ok">В порядке</span></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>2</td>
-                  <td>Windows 10</td>
-                  <td>100$</td>
-                  <td>23.12.2027</td>
-                  <td>12.12.2029</td>
-                  <td><span class="status-badge status-ok">В порядке</span></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>3</td>
-                  <td>Microsoft Office</td>
-                  <td>120$</td>
-                  <td>15.01.2023</td>
-                  <td>14.01.2024</td>
-                  <td><span class="status-badge status-warning">Скоро истекает</span></td>
-                </tr>
-                
-                <tr class="room-header">
-                  <td>310</td>
-                  <td colspan="6">2 Ошибки</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>1</td>
-                  <td>Astra Linux</td>
-                  <td>5$</td>
-                  <td>02.02.2022</td>
-                  <td>14.02.2031</td>
-                  <td><span class="status-badge status-ok">В порядке</span></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>2</td>
-                  <td>Kali Linux</td>
-                  <td>2$</td>
-                  <td>19.02.2023</td>
-                  <td>22.09.2025</td>
-                  <td><span class="status-badge status-warning">Скоро истекает</span></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>3</td>
-                  <td>Excel</td>
-                  <td>68$</td>
-                  <td>21.09.2017</td>
-                  <td>10.08.2020</td>
-                  <td><span class="status-badge status-error">Истёк</span></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>4</td>
-                  <td>Adobe Photoshop</td>
-                  <td>89$</td>
-                  <td>10.05.2023</td>
-                  <td>09.05.2024</td>
-                  <td><span class="status-badge status-error">Истёк</span></td>
-                </tr>
-                
-                <tr class="room-header">
-                  <td>311</td>
-                  <td colspan="6">В порядке</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>1</td>
-                  <td>Windows 11</td>
-                  <td>110$</td>
-                  <td>05.06.2023</td>
-                  <td>04.06.2025</td>
-                  <td><span class="status-badge status-ok">В порядке</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <p>Здесь будет таблица лицензий...</p>
         </div>
         
         <!-- Settings View -->
         <div v-if="currentView === 'settings'">
           <h2 class="page-title">Настройки системы</h2>
-          
-          <div class="settings-container">
-            <div class="settings-card">
-              <h3><i class="fas fa-user-cog"></i> Настройки профиля</h3>
-              <div class="settings-form">
-                <div class="form-group">
-                  <label>Имя пользователя</label>
-                  <input type="text" value="Вика Барабулька">
-                </div>
-                <div class="form-group">
-                  <label>Email</label>
-                  <input type="email" value="vika@example.com">
-                </div>
-                <div class="form-group">
-                  <label>Телефон</label>
-                  <input type="tel" value="+7 912 345 67 89">
-                </div>
-                <button class="btn btn-primary">Сохранить изменения</button>
-              </div>
-            </div>
-            
-            <div class="settings-card">
-              <h3><i class="fas fa-bell"></i> Уведомления</h3>
-              <div class="settings-options">
-                <div class="option-item">
-                  <input type="checkbox" id="notif1" checked>
-                  <label for="notif1">Уведомлять об истекающих лицензиях</label>
-                </div>
-                <div class="option-item">
-                  <input type="checkbox" id="notif2" checked>
-                  <label for="notif2">Уведомлять об истёкших лицензиях</label>
-                </div>
-                <div class="option-item">
-                  <input type="checkbox" id="notif3">
-                  <label for="notif3">Еженедельный отчёт</label>
-                </div>
-              </div>
-            </div>
-          </div>
+          <p>Здесь будут настройки...</p>
         </div>
       </div>
     </div>
