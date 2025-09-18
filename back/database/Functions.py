@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from DB import get_connection, init_db
 
 
@@ -137,6 +137,136 @@ def search_licenses(software=None, room=None, active_only=False):
 
         cursor.execute(query, params)
         return cursor.fetchall()
+
+
+        # ---------------- Количество лицензий ---------------- #
+
+def count_licenses():
+    """Возвращает количество лицензий: активные, истекают через 2 месяца, истекшие."""
+    today = datetime.now().date()
+    two_months = today + timedelta(days=60)
+
+    with get_connection() as conn:
+        cursor = conn.cursor()
+
+        # Активные (сегодня входит в диапазон)
+        cursor.execute("""
+            SELECT COUNT(*) FROM licenses 
+            WHERE license_start <= ? AND license_end >= ?
+        """, (today, today))
+        active = cursor.fetchone()[0]
+
+        # Истекают в ближайшие 2 месяца
+        cursor.execute("""
+            SELECT COUNT(*) FROM licenses 
+            WHERE license_end > ? AND license_end <= ?
+        """, (today, two_months))
+        expiring = cursor.fetchone()[0]
+
+        # Истекшие
+        cursor.execute("""
+            SELECT COUNT(*) FROM licenses 
+            WHERE license_end < ?
+        """, (today,))
+        expired = cursor.fetchone()[0]
+
+    return {"active": active, "expiring": expiring, "expired": expired}
+
+
+# ---------------- Поиск по имени компьютера ---------------- #
+
+def get_computer_by_name(room_number, computer_name):
+    """Получает компьютер по аудитории и имени (уникальная пара)."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT * FROM computers WHERE room_number = ? AND computer_name = ?
+        """, (room_number, computer_name))
+        return cursor.fetchone()
+
+
+# ---------------- Лицензии по ПК и аудитории ---------------- #
+
+def get_licenses_for_computer(room_number, computer_name):
+    """Возвращает все лицензии для конкретного ПК в аудитории."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT l.id, l.software, l.license_start, l.license_end, l.budget
+            FROM licenses l
+            JOIN computers c ON l.computer_id = c.id
+            WHERE c.room_number = ? AND c.computer_name = ?
+        """, (room_number, computer_name))
+        return cursor.fetchall()
+
+
+def get_licenses_for_room(room_number):
+    """Возвращает все лицензии со всех компьютеров в аудитории."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT c.computer_name, l.software, l.license_start, l.license_end, l.budget
+            FROM licenses l
+            JOIN computers c ON l.computer_id = c.id
+            WHERE c.room_number = ?
+        """, (room_number,))
+        return cursor.fetchall()
+
+
+# ---------------- Все аудитории ---------------- #
+
+def get_all_rooms():
+    """Возвращает список всех аудиторий (уникальные номера)."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT DISTINCT room_number FROM computers ORDER BY room_number")
+        return [row[0] for row in cursor.fetchall()]
+
+
+# ---------------- Добавление лицензии (по аудитории и ПК) ---------------- #
+
+def add_license_by_room(room_number, computer_name, software, license_start, license_end, budget):
+    """Добавляет лицензию через аудиторию и ПК (без ручного выбора computer_id)."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        # Получаем id ПК
+        cursor.execute("""
+            SELECT id FROM computers WHERE room_number = ? AND computer_name = ?
+        """, (room_number, computer_name))
+        comp = cursor.fetchone()
+        if not comp:
+            raise ValueError("Компьютер не найден")
+        comp_id = comp[0]
+
+        cursor.execute("""
+            INSERT INTO licenses (computer_id, software, license_start, license_end, budget)
+            VALUES (?, ?, ?, ?, ?)
+        """, (comp_id, software, license_start, license_end, budget))
+        conn.commit()
+
+
+# ---------------- Изменение лицензии (по аудитории, ПК и названию) ---------------- #
+
+def update_license_by_details(room_number, computer_name, software, new_start, new_end):
+    """
+    Находит лицензию по аудитории, ПК и ПО, после чего обновляет даты.
+    """
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT l.id FROM licenses l
+            JOIN computers c ON l.computer_id = c.id
+            WHERE c.room_number = ? AND c.computer_name = ? AND l.software = ?
+        """, (room_number, computer_name, software))
+        lic = cursor.fetchone()
+        if not lic:
+            raise ValueError("Лицензия не найдена")
+        license_id = lic[0]
+
+        cursor.execute("""
+            UPDATE licenses SET license_start = ?, license_end = ? WHERE id = ?
+        """, (new_start, new_end, license_id))
+        conn.commit()
 
 
 # ---------------- Пример ---------------- #
